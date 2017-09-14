@@ -21,6 +21,11 @@
         font-size: 14px;
       }
 
+      .selected {
+        color: var(--highlight-blue);
+        font-weight: bold;
+      }
+
       #balancePanel {
         height: 60px;
         padding: 0 16px;
@@ -37,10 +42,12 @@
     <div id="container" class="horizontal layout center">
       <a href="#"><img class="logo" alt="channels" src="images/logos/logo_full_60.png"></a>
       <div class="flex"></div>
-      <a href="#"><button id="about">About</button></a>
+      <a href="#launch"><button id="launch">Launch</button></a>
       <a href="#account"><button id="account">Account</button></a>
-      <a href="#news"><button id="news">News</button></a>
-      <div id="balancePanel" class="horizontal layout center">ℂ10.000</div>
+      <a href="https://medium.com/channels-network" target="_blank"><button id="blog">Blog</button></a>
+      <a href="#balance">
+        <div id="balancePanel" class="horizontal layout center">ℂ10.000</div>
+      </a>
     </div>
   </template>
   <script>
@@ -50,17 +57,20 @@
         return {};
       }
 
-      // _about() {
-      //   $router.goto("");
-      // }
-
-      // _account() {
-      //   $router.goto("account");
-      // }
-
-      // _news() {
-      //   $router.goto("_news");
-      // }
+      onRoute(route) {
+        var path = route.segments[0];
+        var match = null;
+        if (path) {
+          match = this.$[path];
+        }
+        if (this._prevMatch) {
+          this._prevMatch.classList.remove("selected");
+        }
+        if (match) {
+          match.classList.add("selected");
+          this._prevMatch = match;
+        }
+      }
     }
     window.customElements.define(AppBar.is, AppBar);
   </script>

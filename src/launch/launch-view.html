@@ -12,15 +12,30 @@
         max-width: 600px;
         margin: 0 auto;
         text-align: center;
+        position: relative;
       }
 
       .count {
         margin-top: 50px;
-        font-size: 70px;
       }
 
       .footer {
         margin-top: 80px;
+      }
+
+      .countPanel {
+        line-height: 1.2;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .countValue {
+        font-size: 70px;
+      }
+
+      .countLabel {
+        text-transform: uppercase;
+        font-size: 14px;
       }
 
       @media (max-width: 600px) {
@@ -29,7 +44,15 @@
         }
         .count {
           margin-top: 30px;
-          font-size: 30px;
+        }
+        .countLabel {
+          font-size: 12px;
+        }
+        .countValue {
+          font-size: 40px;
+        }
+        .countPanel {
+          padding: 10px;
         }
       }
     </style>
@@ -37,7 +60,24 @@
     <div class="content">
       <h3>We're holding a spot for you!</h3>
       <h3>Channels will be going live in</h3>
-      <div class="count">88d 88h 88m 88s</div>
+      <div class="count horizontal layout center-center">
+        <div class="countPanel">
+          <div class="countValue">88</div>
+          <div class="countLabel">days</div>
+        </div>
+        <div class="countPanel">
+          <div class="countValue">88</div>
+          <div class="countLabel">Hours</div>
+        </div>
+        <div class="countPanel">
+          <div class="countValue">88</div>
+          <div class="countLabel">Minutes</div>
+        </div>
+        <div class="countPanel">
+          <div class="countValue">88</div>
+          <div class="countLabel">Seconds</div>
+        </div>
+      </div>
       <div class="footer">
         <p>Want to earn extra coins for you and your friends?</p>
         <p>
