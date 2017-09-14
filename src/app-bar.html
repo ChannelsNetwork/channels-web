@@ -1,0 +1,26 @@
+<dom-module id="app-bar">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
+       :host {
+        display: block;
+      }
+
+      #container {
+        height: 60px;
+        padding: 0 16px;
+      }
+    </style>
+    <div id="container" class="horizontal layout center">
+      <div class="flex">Channels toolbar</div>
+    </div>
+  </template>
+  <script>
+    class AppBar extends Polymer.Element {
+      static get is() { return "app-bar"; }
+      static get properties() {
+        return {};
+      }
+    }
+    window.customElements.define(AppBar.is, AppBar);
+  </script>
+</dom-module>
