@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="app-styles.html">
 <link rel="import" href="app-bar.html">
+<link rel="import" href="core/core.html">
 
 
 <dom-module id="main-app">
@@ -36,6 +37,7 @@
       }
     </style>
     <hash-router id="router" on-route-change="onRouteChange"></hash-router>
+    <channels-core></channels-core>
     <div id="shell" class="shell vertical layout">
       <app-bar id="toolbar"></app-bar>
       <div id="pageContainer" class="flex">
