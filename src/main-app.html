@@ -1,10 +1,12 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="app-styles.html">
 <link rel="import" href="app-bar.html">
+
 
 <dom-module id="main-app">
   <template>
-    <style is="custom-style" include="iron-flex iron-flex-alignment">
+    <style is="custom-style" include="app-styles iron-flex iron-flex-alignment">
        :host {
         display: block;
       }
@@ -29,20 +31,17 @@
         top: -70px;
         left: 0;
         right: 0;
-        z-index: 1;
+        z-index: 2;
         transition: top 0.3s ease;
-      }
-
-      #spacer {
-        height: 60px;
       }
     </style>
     <hash-router id="router" on-route-change="onRouteChange"></hash-router>
     <div id="shell" class="shell vertical layout">
-      <div id="spacer" style="display: none;"></div>
-      <app-bar></app-bar>
+      <app-bar id="toolbar"></app-bar>
       <div id="pageContainer" class="flex">
-        <home-view id="home" class="home page" data-href="home/home-view.html"></home-view>
+        <home-view id="home" class="home page" data-href="home/home-view.html" data-dir="down"></home-view>
+        <register-view class="register page" data-href="account/register-view.html" data-dir="up"></register-view>
+        <launch-view class="launch page" data-toolbar="true" data-href="launch/launch-view.html"></launch-view>
       </div>
     </div>
   </template>
@@ -77,23 +76,43 @@
           activePage = this.$.home;
           pageName = "home";
         }
-        activePage.style.display = "";
 
         // Notify prev page it's being hidden
         if (this._lastPage) {
           if (this._lastPage != activePage) {
+            this._lastPage.style.display = "";
             if (this._lastPage.onDeactivate) {
               this._lastPage.onDeactivate();
             }
           }
         }
+        var lastPage = this._lastPage;
         this._lastPage = activePage;
+
+        // animation setup
+        var animate = lastPage && (lastPage != activePage);
+        const animationType = activePage.getAttribute("data-dir") || "right";
+        const showToolbar = activePage.getAttribute("data-toolbar") == "true";
+        if (animate) {
+          lastPage.classList.add("floatingPage");
+          activePage.classList.add("floatingPage");
+          if (!showToolbar) {
+            this._setBarVisible(false);
+          }
+        } else {
+          activePage.style.display = "";
+          this._setBarVisible(showToolbar);
+        }
 
         // import page and activate it
         const pageHref = activePage.getAttribute("data-href");
+
         const pageCallback = () => {
           if (activePage.onActivate) {
             activePage.onActivate(route);
+          }
+          if (animate) {
+            this._animate(lastPage, activePage, animationType, showToolbar);
           }
         };
         if (pageHref) {
@@ -104,6 +123,50 @@
 
         // scroll to top
         this.$.shell.scrollTop = 0;
+      }
+
+      _setBarVisible(visible) {
+        this.$.toolbar.style.top = visible ? "0px" : "-70px";
+      }
+
+      _animate(p1, p2, animation, showToolbar) {
+        this.$.shell.style.overflow = "hidden";
+        p2.style.zIndex = 1;
+        p1.style.zIndex = 0;
+        p2.style.display = "";
+        var animationComplete = () => {
+          this.$.shell.style.overflow = null;
+          p1.style.display = "none";
+          p1.style.transform = "none";
+          p1.classList.remove("floatingPage");
+          p2.classList.remove("floatingPage");
+          p2.style.zIndex = 0;
+          p1.style.zIndex = 0;
+          if (showToolbar) {
+            this._setBarVisible(true);
+          }
+        };
+        switch (animation) {
+          case "down":
+            p2.style.transform = "translateY(-100vh)";
+            p1.style.transform = "none";
+            setTimeout(() => {
+              p2.style.transform = "none";
+              p1.style.transform = "translateY(100vh)";
+              setTimeout(animationComplete, 500);
+            }, 50);
+            break;
+          case "up":
+          default:
+            p2.style.transform = "translateY(100vh)";
+            p1.style.transform = "none";
+            setTimeout(() => {
+              p2.style.transform = "none";
+              p1.style.transform = "translateY(-100vh)";
+              setTimeout(animationComplete, 500);
+            }, 50);
+            break;
+        }
       }
     }
     window.customElements.define(MainApp.is, MainApp);

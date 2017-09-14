@@ -12,6 +12,7 @@
         display: block;
         width: 100%;
         height: 100%;
+        overflow: visible;
       }
 
       .cu {
@@ -39,6 +40,34 @@
       .b3 {
         fill: #ff6b6b;
       }
+
+      path {
+        transition: all 3s ease-in-out;
+      }
+
+      .hidden {
+        opacity: 0;
+      }
+
+      .cu.hidden {
+        transform: translate3d(0, -100px, 0);
+      }
+
+      .cl.hidden {
+        transform: translate3d(0, 100px, 0);
+      }
+
+      .b1.hidden {
+        transform: translate3d(-150px, -60px, 0);
+      }
+
+      .b2.hidden {
+        transform: translate3d(250px, -80px, 0);
+      }
+
+      .b3.hidden {
+        transform: translate3d(-150px, 60px, 0);
+      }
     </style>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 344.62 398.8">
       <path id="cu" class="cu" d="M147.56,172c4.92-70.88,52.61-105.41,113.14-105.41a174,174,0,0,1,67.55,13.16l16.38-63.89C330.35,8.43,298.7,0,257,0,149.26,0,62.67,67.59,62.67,189c0,6,.22,11.79.63,17.56Z"></path>
@@ -51,6 +80,41 @@
   <script>
     class ChannelsLogo extends Polymer.Element {
       static get is() { return "channels-logo"; }
+      static get properties() {
+        return {
+          hidden: {
+            type: Boolean,
+            observer: '_refresh'
+          }
+        }
+      }
+
+      connectedCallback() {
+        super.connectedCallback()
+        this._attached = true;
+        this._refresh();
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this._attached = false;
+      }
+
+      _refresh() {
+        if (this.hidden) {
+          this.$.cu.classList.add("hidden");
+          this.$.cl.classList.add("hidden");
+          this.$.b1.classList.add("hidden");
+          this.$.b2.classList.add("hidden");
+          this.$.b3.classList.add("hidden");
+        } else {
+          this.$.cu.classList.remove("hidden");
+          this.$.cl.classList.remove("hidden");
+          this.$.b1.classList.remove("hidden");
+          this.$.b2.classList.remove("hidden");
+          this.$.b3.classList.remove("hidden");
+        }
+      }
     }
     window.customElements.define(ChannelsLogo.is, ChannelsLogo);
   </script>

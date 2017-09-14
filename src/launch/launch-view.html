@@ -1,0 +1,55 @@
+<dom-module id="launch-view">
+  <template>
+    <style is="custom-style" include="app-styles iron-flex iron-flex-alignment">
+       :host {
+        display: block;
+        background: #313034;
+        min-height: 100vh;
+      }
+
+      .content {
+        padding: 50px 15px 20px;
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .count {
+        margin-top: 50px;
+        font-size: 70px;
+      }
+
+      .footer {
+        margin-top: 80px;
+      }
+
+      @media (max-width: 600px) {
+        h3 {
+          font-size: 20px;
+        }
+        .count {
+          margin-top: 30px;
+          font-size: 30px;
+        }
+      }
+    </style>
+    <div class="barspace"></div>
+    <div class="content">
+      <h3>We're holding a spot for you!</h3>
+      <h3>Channels will be going live in</h3>
+      <div class="count">88d 88h 88m 88s</div>
+      <div class="footer">
+        <p>Want to earn extra coins for you and your friends?</p>
+        <p>
+          <a href="#invite">Invite a friend</a>
+        </p>
+      </div>
+    </div>
+  </template>
+  <script>
+    class LaunchView extends Polymer.Element {
+      static get is() { return "launch-view"; }
+    }
+    window.customElements.define(LaunchView.is, LaunchView);
+  </script>
+</dom-module>
